@@ -22,7 +22,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
+
+    public function characters()
+{
+    return $this->hasMany(Character::class);
+}
 
     /**
      * The attributes that should be hidden for serialization.
