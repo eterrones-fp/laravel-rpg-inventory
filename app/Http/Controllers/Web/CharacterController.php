@@ -6,6 +6,7 @@ use App\Models\Character;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCharacterRequest;
 use App\Http\Requests\UpdateCharacterRequest;
+use App\Services\ActionLogService;
 use Illuminate\Http\Request;
 
 class CharacterController extends Controller
@@ -48,6 +49,17 @@ class CharacterController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
+        ActionLogService::log(
+            'character_created_web',
+            $request->user()->id,
+            $character->id,
+            null,
+            [
+                'name' => $character->name,
+                'level' => $character->level,
+            ]
+        );
+
         return redirect()
             ->route('characters.show.web', $character)
             ->with('success', 'Personaje creado correctamente.');
@@ -66,6 +78,14 @@ class CharacterController extends Controller
 
         $character->update($request->validated());
 
+        ActionLogService::log(
+            'character_updated_web',
+            $request->user()->id,
+            $character->id,
+            null,
+            $request->validated()
+        );
+
         return redirect()
             ->route('characters.show.web', $character)
             ->with('success', 'Personaje actualizado correctamente.');
@@ -76,6 +96,21 @@ class CharacterController extends Controller
         $this->authorize('delete', $character);
 
         $character->delete();
+
+        $name = $character->name;
+        $id = $character->id;
+
+        $character->delete();
+
+        ActionLogService::log(
+            'character_deleted_web',
+            auth()->id(),
+            $id,
+            null,
+            [
+                'name' => $name,
+            ]
+        );
 
         return redirect()
             ->route('characters.index.web')

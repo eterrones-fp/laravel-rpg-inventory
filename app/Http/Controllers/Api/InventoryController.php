@@ -56,6 +56,18 @@ class InventoryController extends Controller
             ]
         );
 
+        ActionLogService::log(
+            'inventory_updated',
+            $request->user()->id,
+            $character->id,
+            $item->id,
+            [
+                'quantity' => $request->quantity,
+                'equipped' => $request->equipped,
+                'slot' => $item->slot,
+            ]
+        );
+
         return response()->json([
             'message' => 'Inventario actualizado correctamente.',
             'inventory' => $inventory->load('item'),

@@ -8,6 +8,7 @@ use App\Http\Requests\StoreCharacterRequest;
 use App\Http\Requests\UpdateCharacterRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Services\ActionLogService;
 
 class CharacterController extends Controller
 {
@@ -33,6 +34,16 @@ class CharacterController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
+        ActionLogService::log(
+            'character_created',
+            $request->user()->id,
+            $character->id,
+            null,
+            [
+                'name' => $character->name,
+                'level' => $character->level,
+            ]
+        );
         return response()->json([
             'message' => 'Personaje creado correctamente.',
             'character' => $character,
@@ -44,6 +55,14 @@ class CharacterController extends Controller
         $this->authorize('update', $character);
 
         $character->update($request->validated());
+
+        ActionLogService::log(
+            'character_updated',
+            $request->user()->id,
+            $character->id,
+            null,
+            $request->validated()
+        );
 
         return response()->json([
             'message' => 'Personaje actualizado correctamente.',
@@ -57,7 +76,17 @@ class CharacterController extends Controller
 
         $character->delete();
 
-        return response()->json([
+        ActionLogService::log(
+            'character_deleted',
+            auth()->id(),
+            $character->id,
+            null,
+            [
+                'name' => $character->name,
+            ]
+        );
+
+         return response()->json([
             'message' => 'Personaje eliminado correctamente.'
         ]);
     }
