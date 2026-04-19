@@ -21,8 +21,10 @@ Aplicación desarrollada con Laravel para la gestión de personajes e inventario
 
 * **Laravel 12**
 * **PHP 8.2**
-* **SQLite / MySQL** (datos principales)
+* **MySQL** (datos principales con Docker)
 * **MongoDB** (logs)
+* **Mongo Express**
+* **Docker (Laravel Sail)**
 * **Blade** (frontend)
 * **Thunder Client / Postman** (testing API)
 
@@ -38,10 +40,13 @@ composer install
 
 cp .env.example .env
 php artisan key:generate
+```
 
-php artisan migrate --seed
+### 🐳 Ejecutar con Docker (Laravel Sail)
 
-php artisan serve
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate:fresh --seed
 ```
 
 ---
@@ -52,6 +57,15 @@ php artisan serve
 Email: admin@test.com
 Password: password
 ```
+
+---
+
+## 🌐 Acceso a servicios
+
+| Servicio      | URL                   |
+| ------------- | --------------------- |
+| Aplicación    | http://localhost      |
+| Mongo Express | http://localhost:8082 |
 
 ---
 
@@ -72,7 +86,7 @@ Password: password
 ### 🎒 Inventario
 
 * `GET /api/characters/{id}/inventory`
-* `POST /api/inventory` (update o create)
+* `POST /api/inventory`
 
 ---
 
@@ -92,20 +106,20 @@ Rutas principales:
 
 El proyecto sigue el patrón **MVC (Model-View-Controller)**:
 
-* **Models**: gestión de datos (`User`, `Character`, `Item`, `Inventory`, `ActionLog`)
+* **Models**: (`User`, `Character`, `Item`, `Inventory`, `ActionLog`)
 * **Controllers**:
 
   * API Controllers → lógica REST
   * Web Controllers → vistas Blade
 * **Form Requests** → validación de datos
 * **Policies** → control de permisos
-* **Services** → lógica reutilizable (`ActionLogService`)
+* **Services** → (`ActionLogService`)
 
 ---
 
 ## 📊 Logs en MongoDB
 
-Se ha implementado un sistema de logs para registrar acciones relevantes:
+Sistema de logs implementado para registrar acciones relevantes.
 
 ### Acciones registradas:
 
@@ -114,23 +128,27 @@ Se ha implementado un sistema de logs para registrar acciones relevantes:
 * eliminación de personajes
 * actualización de inventario
 
-### Estructura del log:
+### 📦 Almacenamiento:
+
+* Base de datos: `rpg_inventory_logs`
+* Colección: `action_logs`
+
+### Ejemplo:
 
 ```json
 {
-  "action": "character_created",
+  "action": "character_updated_web",
   "user_id": 1,
-  "character_id": 5,
+  "character_id": 7,
   "item_id": null,
   "metadata": {
-    "name": "Hero",
+    "name": "Pepa",
     "level": 10
-  },
-  "created_at": "2026-04-19"
+  }
 }
 ```
 
-Colección utilizada: `logs`
+Los logs se visualizan mediante Mongo Express.
 
 ---
 
@@ -140,7 +158,7 @@ Se han realizado pruebas mediante:
 
 * Thunder Client / Postman (API)
 * Navegador (interfaz web)
-* Tinker (verificación de MongoDB)
+* Mongo Express (visualización de logs)
 
 ---
 
@@ -152,7 +170,7 @@ Se ha utilizado ChatGPT como herramienta de apoyo para:
 * generación de ejemplos de código
 * comprensión de conceptos de Laravel
 
-Todas las soluciones han sido adaptadas y comprendidas antes de su implementación.
+Todas las soluciones han sido comprendidas antes de su implementación.
 
 ---
 
@@ -164,7 +182,7 @@ Se ha utilizado Git con commits estructurados:
 * `fix` → corrección de errores
 * `chore` → mantenimiento
 
-Se han gestionado tareas mediante issues.
+Gestión de tareas mediante issues.
 
 ---
 
@@ -175,7 +193,7 @@ En el vídeo se muestra:
 * login en la aplicación
 * gestión de personajes
 * uso de la API
-* visualización de logs en MongoDB
+* visualización de logs en MongoDB mediante Mongo Express
 
 ---
 
@@ -183,5 +201,3 @@ En el vídeo se muestra:
 
 Proyecto desarrollado para DAW
 Alumno: Enric Terrones
-
----
