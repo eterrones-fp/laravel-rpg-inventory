@@ -1,59 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎮 Laravel RPG Inventory
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación desarrollada con Laravel para la gestión de personajes e inventario estilo RPG, combinando API REST, interfaz web y sistema de logs en MongoDB.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Funcionalidades
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* 🔐 Autenticación de usuarios (login / logout con token)
+* 👤 Gestión de personajes (CRUD completo)
+* 🎒 Sistema de inventario por personaje
+* 🌐 API REST para operaciones backend
+* 🖥️ Interfaz web con Blade
+* 📊 Logs de acciones almacenados en MongoDB
+* 🔒 Control de acceso mediante Policies
+* ✅ Validaciones con Form Requests
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Tecnologías utilizadas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* **Laravel 12**
+* **PHP 8.2**
+* **SQLite / MySQL** (datos principales)
+* **MongoDB** (logs)
+* **Blade** (frontend)
+* **Thunder Client / Postman** (testing API)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## ⚙️ Instalación
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/eterrones-fp/laravel-rpg-inventory
+cd laravel-rpg-inventory
 
-### Premium Partners
+composer install
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+cp .env.example .env
+php artisan key:generate
 
-## Contributing
+php artisan migrate --seed
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+php artisan serve
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🔑 Acceso de prueba
 
-## Security Vulnerabilities
+```text
+Email: admin@test.com
+Password: password
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🌐 Endpoints principales (API)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 🔐 Autenticación
+
+* `POST /api/login`
+* `POST /api/logout`
+
+### 👤 Personajes
+
+* `GET /api/characters`
+* `POST /api/characters`
+* `PUT /api/characters/{id}`
+* `DELETE /api/characters/{id}`
+
+### 🎒 Inventario
+
+* `GET /api/characters/{id}/inventory`
+* `POST /api/inventory` (update o create)
+
+---
+
+## 🖥️ Interfaz Web
+
+Rutas principales:
+
+* `/login` → login usuario
+* `/characters` → listado de personajes
+* `/characters/create` → crear personaje
+* `/characters/{id}` → ver detalle
+* `/characters/{id}/edit` → editar
+
+---
+
+## 🧠 Arquitectura del proyecto
+
+El proyecto sigue el patrón **MVC (Model-View-Controller)**:
+
+* **Models**: gestión de datos (`User`, `Character`, `Item`, `Inventory`, `ActionLog`)
+* **Controllers**:
+
+  * API Controllers → lógica REST
+  * Web Controllers → vistas Blade
+* **Form Requests** → validación de datos
+* **Policies** → control de permisos
+* **Services** → lógica reutilizable (`ActionLogService`)
+
+---
+
+## 📊 Logs en MongoDB
+
+Se ha implementado un sistema de logs para registrar acciones relevantes:
+
+### Acciones registradas:
+
+* creación de personajes
+* actualización de personajes
+* eliminación de personajes
+* actualización de inventario
+
+### Estructura del log:
+
+```json
+{
+  "action": "character_created",
+  "user_id": 1,
+  "character_id": 5,
+  "item_id": null,
+  "metadata": {
+    "name": "Hero",
+    "level": 10
+  },
+  "created_at": "2026-04-19"
+}
+```
+
+Colección utilizada: `logs`
+
+---
+
+## 🧪 Testing
+
+Se han realizado pruebas mediante:
+
+* Thunder Client / Postman (API)
+* Navegador (interfaz web)
+* Tinker (verificación de MongoDB)
+
+---
+
+## 🧑‍💻 Uso de IA
+
+Se ha utilizado ChatGPT como herramienta de apoyo para:
+
+* resolución de errores
+* generación de ejemplos de código
+* comprensión de conceptos de Laravel
+
+Todas las soluciones han sido adaptadas y comprendidas antes de su implementación.
+
+---
+
+## 📦 Control de versiones
+
+Se ha utilizado Git con commits estructurados:
+
+* `feat` → nuevas funcionalidades
+* `fix` → corrección de errores
+* `chore` → mantenimiento
+
+Se han gestionado tareas mediante issues.
+
+---
+
+## 🎥 Vídeo demo
+
+En el vídeo se muestra:
+
+* login en la aplicación
+* gestión de personajes
+* uso de la API
+* visualización de logs en MongoDB
+
+---
+
+## 📌 Autor
+
+Proyecto desarrollado para DAW
+Alumno: Enric Terrones
+
+---
