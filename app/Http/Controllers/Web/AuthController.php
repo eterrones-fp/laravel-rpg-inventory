@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('login.form');
+        return redirect()->route('characters.index.web');
     }
 
     public function logout(Request $request)
