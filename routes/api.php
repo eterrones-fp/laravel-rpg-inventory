@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CharacterController;
 use App\Http\Controllers\Api\ItemController;
+use App\Http\Controllers\Api\InventoryController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -22,4 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/items', [ItemController::class, 'store']);
     Route::put('/items/{item}', [ItemController::class, 'update']);
     Route::delete('/items/{item}', [ItemController::class, 'destroy']);
+    Route::get('/characters/{character}/inventory', [InventoryController::class, 'index']);
+Route::put('/characters/{character}/inventory', [InventoryController::class, 'upsert']);
 });
