@@ -7,6 +7,7 @@ use App\Models\Character;
 use App\Models\Inventory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateInventoryRequest;
+use App\Services\ActionLogService;
 use Illuminate\Http\JsonResponse;
 
 class InventoryController extends Controller
