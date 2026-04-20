@@ -64,7 +64,7 @@ Password: password
 
 | Servicio      | URL                   |
 | ------------- | --------------------- |
-| Aplicación    | http://localhost      |
+| Aplicación    | http://localhost:8001 |
 | Mongo Express | http://localhost:8082 |
 
 ---
