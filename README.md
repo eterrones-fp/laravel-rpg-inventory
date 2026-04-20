@@ -188,6 +188,8 @@ Gestión de tareas mediante issues.
 
 ## 🎥 Vídeo demo
 
+https://drive.google.com/drive/folders/1eldOephI6lJn9xjRflnuu8mdTtxYQjOL
+
 En el vídeo se muestra:
 
 * login en la aplicación
